@@ -1,2 +1,3 @@
 writing something in a file
 09508
+new line
