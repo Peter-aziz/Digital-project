@@ -153,7 +153,27 @@ void draw_k_map(int no_of_variables, int *truth_able, int no_of_rows) {
 }
 
 //8.[5 Pts] Draw the logic circuit of the minimized function(up to 10 variables); you may use https ://wavedrom.com/tutorial2.html
+// function to split a SOP boolean function into its products
+vector<string> split_SOP(string str)
+{
+	vector<string> v;
 
+	stringstream ss(str);
+
+	while (ss.good()) {
+		string substr;
+		getline(ss, substr, '+');
+		v.push_back(substr);
+	}
+	return v;
+
+}
+
+void draw_logic_circuit(string minimized_function) {
+	vector <string> products = split_SOP(minimized_function);
+
+
+}
 
 
 int main() {
