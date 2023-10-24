@@ -1,2 +1,3 @@
 ﻿  Source.cpp
+F:\Digital design\Digital-project\Project1\Project1\Source.cpp(163,17): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
   Project1.vcxproj -> F:\Digital design\Digital-project\Project1\x64\Debug\Project1.exe

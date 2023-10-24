@@ -5,14 +5,10 @@
 #include <algorithm>
 #include <sstream>
 #include <cmath>
+
 using namespace std;
 
 //1. [10 Points] Read in (and validate) a Boolean function given as Assume that the variable name is a single Latin letter starting from “a”.Think about the checkers needed to validate the inputand list them in your report.
-
-void sortString(string& str)         //Sort the string of the Boolean function.
-{
-	sort(str.begin(), str.end());
-}
 
 bool isValidVariable(char var) {
     return isalpha(var) && islower(var);
@@ -38,19 +34,22 @@ bool isValidPoS(const string& expression) {
     return true;
 }
 
-void validateBooleanFunction() {
-    string expression;
-    cout << "Enter a Boolean function in SoP or PoS form: ";
-    getline(std::cin, expression);
+bool validateBooleanFunction(string expression) {
 
-    if (isValidSoP(expression)) {
-        cout << "Valid SoP expression: " << expression << endl;
-    } else if (isValidPoS(expression)) {
-        cout << "Valid PoS expression: " << expression << endl;
-    } else {
-        cout << "Invalid expression. Please enter a valid SoP or PoS expression." << endl;
-    }
+	if (isValidSoP(expression)) {
+		cout << "Valid SoP expression: " << expression << endl;
+		return 1;
+	}
+	else if (isValidPoS(expression)) {
+		cout << "Valid PoS expression: " << expression << endl;
+		return 1;
+	}
+	else {
+		cout << "Invalid expression. Please enter a valid SoP or PoS expression." << endl;
+		return 0;
+	}
 }
+
 
 
 //2.[10 Points] Print the truth table of the function as well as the canonical SoP and PoS.
@@ -64,7 +63,7 @@ void validateBooleanFunction() {
 //6.[10 Points, Bonus] Solve the PI table and print the minimized Boolean expression of the Boolean function using the 3 - step heuristic discussed in the lecture.
 
 //7.[5 Pts] Draw the K - Map showing the solution(up to 4 variables)
-void draw_k_map(int no_of_variables, int truth_able[]) {
+void draw_k_map(int no_of_variables, int *truth_able, int no_of_rows) {
 	if (no_of_variables == 1) {
 		int k_map[1][2];
 		// k map with 1 cell
@@ -161,19 +160,30 @@ int main() {
 	cout << "Enter number of variables: ";
 	cin >> no_of_variables;
 
+	int no_of_rows = pow(2, no_of_variables);
+	int* truth_table = new int[no_of_rows];
+	
+
 	// validating number of variables
 	if ((no_of_variables <0) || (no_of_variables > 10)) {
 		cout << "wrong number of variables";
 		return 0;
 	}
+	
 
 	string boolean_function;
 	cout << "Enter boolean function: ";
 	cin >> boolean_function;
+	
 	//validating boolean function
+	if (validateBooleanFunction(boolean_function) == 0) {
+		return 0;
+	}
+	
 
-	int test_array[16] = { 0,1,1,0,1,0,0,0,0,0,1,0,0,1,0,0 };
-	draw_k_map(no_of_variables, test_array);
+	
+	// Draw K-map
+	draw_k_map(no_of_variables, truth_table,no_of_rows);
 
 	return 0;
 
