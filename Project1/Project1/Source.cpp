@@ -7,7 +7,12 @@
 #include <cmath>
 using namespace std;
 
+void sortString(string& str)         //Sort the string of the Boolean function.
+{
 
+	sort(str.begin(), str.end());
+	
+}
 //1. [10 Points] Read in (and validate) a Boolean function given as Assume that the variable name is a single Latin letter starting from “a”.Think about the checkers needed to validate the inputand list them in your report.
 
 //2.[10 Points] Print the truth table of the function as well as the canonical SoP and PoS.
