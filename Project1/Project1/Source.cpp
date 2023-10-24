@@ -181,16 +181,15 @@ int main() {
 	cout << "Enter number of variables: ";
 	cin >> no_of_variables;
 
-	int no_of_rows = pow(2, no_of_variables);
-	int* truth_table = new int[no_of_rows];
 	
-
 	// validating number of variables
 	if ((no_of_variables <0) || (no_of_variables > 10)) {
 		cout << "wrong number of variables";
 		return 0;
 	}
 	
+	int no_of_rows = pow(2, no_of_variables);
+	int* truth_table = new int[no_of_rows];
 
 	string boolean_function;
 	cout << "Enter boolean function: ";
@@ -202,10 +201,26 @@ int main() {
 	}
 	
 
-	
 	// Draw K-map
 	draw_k_map(no_of_variables, truth_table,no_of_rows);
 
 	return 0;
 
 }
+
+// Test Cases
+/*
+1) number of variables = -1 boolean function = ***
+2) number of variables = 12 boolean function = ***
+3) number of variables = 1 boolean function = a
+4) number of variables = 2 boolean function = ab'
+5) number of variables = 3 boolean function = abc + b'c'
+6) number of variables = 4 boolean function = (a+d)(b+c')
+7) number of variables = 5 boolean function = ab'c'd + bce
+8) number of variables = 6 boolean function = (a+c)(d+e)(b+d')
+9) number of variables = 7 boolean function = (a+c')(d+e)(b'+d)(f+g)
+10) number of variables = 8 boolean function = ab+g
+11) number of variables = 9 boolean function = ab+ge+cd'+f'
+
+
+*/
