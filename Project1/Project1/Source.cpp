@@ -4,6 +4,7 @@
 #include <string>
 #include <algorithm>
 #include <sstream>
+#include <cmath>
 using namespace std;
 
 
@@ -22,6 +23,8 @@ using namespace std;
 //7.[5 Pts] Draw the K - Map showing the solution(up to 4 variables)
 
 //8.[5 Pts] Draw the logic circuit of the minimized function(up to 10 variables); you may use https ://wavedrom.com/tutorial2.html
+
+
 
 int main() {
 
