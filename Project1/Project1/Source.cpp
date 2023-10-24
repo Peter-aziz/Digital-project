@@ -11,11 +11,46 @@ using namespace std;
 
 void sortString(string& str)         //Sort the string of the Boolean function.
 {
-
 	sort(str.begin(), str.end());
-	
 }
 
+bool isValidVariable(char var) {
+    return isalpha(var) && islower(var);
+}
+
+bool isValidSoP(const string& expression) {
+    // Check that each term is valid
+    for (char c : expression) {
+        if (!isValidVariable(c) && c != '\'' && c != '+' && c != ' ' && c != '.') {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool isValidPoS(const string& expression) {
+    // Check that each term is valid
+    for (char c : expression) {
+        if (!isValidVariable(c) && c != '\'' && c != '+' && c != ' ' && c != '(' && c != ')') {
+            return false;
+        }
+    }
+    return true;
+}
+
+void validateBooleanFunction() {
+    string expression;
+    cout << "Enter a Boolean function in SoP or PoS form: ";
+    getline(std::cin, expression);
+
+    if (isValidSoP(expression)) {
+        cout << "Valid SoP expression: " << expression << endl;
+    } else if (isValidPoS(expression)) {
+        cout << "Valid PoS expression: " << expression << endl;
+    } else {
+        cout << "Invalid expression. Please enter a valid SoP or PoS expression." << endl;
+    }
+}
 
 
 //2.[10 Points] Print the truth table of the function as well as the canonical SoP and PoS.
