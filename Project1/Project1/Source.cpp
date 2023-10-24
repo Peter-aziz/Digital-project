@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <sstream>
 #include <cmath>
+#include <cctype>
 using namespace std;
 
 //1. [10 Points] Read in (and validate) a Boolean function given as Assume that the variable name is a single Latin letter starting from “a”.Think about the checkers needed to validate the inputand list them in your report.
