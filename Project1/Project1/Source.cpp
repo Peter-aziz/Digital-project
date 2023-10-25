@@ -188,8 +188,6 @@ int main() {
 		return 0;
 	}
 	
-	int no_of_rows = pow(2, no_of_variables);
-	int* truth_table = new int[no_of_rows];
 
 	string boolean_function;
 	cout << "Enter boolean function: ";
@@ -199,6 +197,12 @@ int main() {
 	if (validateBooleanFunction(boolean_function) == 0) {
 		return 0;
 	}
+
+	int no_of_rows = pow(2, no_of_variables);
+	int* truth_table = new int[no_of_rows];
+	
+	// draw truth table 
+
 	
 
 	// Draw K-map
