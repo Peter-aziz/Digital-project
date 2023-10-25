@@ -54,6 +54,68 @@ bool validateBooleanFunction(string expression) {
 
 
 //2.[10 Points] Print the truth table of the function as well as the canonical SoP and PoS.
+bool evaluateBooleanExpression(const string& expression, const vector<char>& variables, const vector<bool>& variableValues) {
+    string expr = expression;
+    
+    // Replace variables with their values
+    for (size_t i = 0; i < variables.size(); i++) {
+        char var = variables[i];
+        char replacement = variableValues[i] ? '1' : '0';
+
+        replace(expr.begin(), expr.end(), var, replacement);
+    }
+
+    // Evaluate the expression and return the result
+    int result = 0;
+    try {
+        result = stoi(expr, 0, 2);
+    } catch (const invalid_argument& e) {
+        cerr << "Error: Invalid expression." << endl;
+    }
+
+    return result;
+}
+
+void generateTruthTable(const string& expression) {
+    // Extract unique variables from the expression
+    vector<char> variables;
+    for (char c : expression) {
+        if (isValidVariable(c) && find(variables.begin(), variables.end(), c) == variables.end()) {
+            variables.push_back(c);
+        }
+    }
+
+    int numVariables = variables.size();
+
+    cout << "Truth Table:" << endl;
+
+    // Print header with variable names
+    for (char var : variables) {
+        cout << var << " ";
+    }
+    cout << "| F" << endl;
+
+    // Calculate the number of rows in the truth table
+    int numRows = 1 << numVariables;
+
+    // Evaluate the expression for each combination of variable values
+    for (int row = 0; row < numRows; row++) {
+        vector<bool> variableValues(numVariables);
+
+        for (int i = 0; i < numVariables; i++) {
+            variableValues[i] = (row >> i) & 1;
+        }
+
+        // Evaluate the expression with the current variable values
+        bool result = evaluateBooleanExpression(expression, variables, variableValues);
+
+        // Print the current variable values and the result
+        for (int i = 0; i < numVariables; i++) {
+            cout << variableValues[i] << " ";
+        }
+        cout << "| " << result << endl;
+    }
+}
 
 //3.[20 Points] Generate and print all prime implicants(PIs).For each PI show the minterms it covers as well as its binary representation.
 
