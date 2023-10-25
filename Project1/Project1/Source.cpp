@@ -9,6 +9,41 @@
 
 using namespace std;
 
+// function to split SOP to its products
+vector<string> split_SOP(string str)
+{
+	vector<string> v;
+
+	stringstream ss(str);
+
+	while (ss.good()) {
+		string substr;
+		getline(ss, substr, '+');
+		v.push_back(substr);
+	}
+	return v;
+
+}
+
+// function to change binary to decimal 
+int binary_string_to_decimal(string binary_string) {
+	int decimal_number = 0;
+	int power_of_two = 1;
+
+	for (int i = binary_string.length() - 1; i >= 0; i--) {
+		if (binary_string[i] == '1') {
+			decimal_number += power_of_two;
+		}
+
+		power_of_two *= 2;
+	}
+
+	return decimal_number;
+}
+
+
+
+
 //1. [10 Points] Read in (and validate) a Boolean function given as Assume that the variable name is a single Latin letter starting from “a”.Think about the checkers needed to validate the inputand list them in your report.
 
 bool isValidVariable(char var) {
@@ -54,67 +89,54 @@ bool validateBooleanFunction(string expression) {
 
 
 //2.[10 Points] Print the truth table of the function as well as the canonical SoP and PoS.
-bool evaluateBooleanExpression(const string& expression, const vector<char>& variables, const vector<bool>& variableValues) {
-    string expr = expression;
-    
-    // Replace variables with their values
-    for (size_t i = 0; i < variables.size(); i++) {
-        char var = variables[i];
-        char replacement = variableValues[i] ? '1' : '0';
+int* print_truth_table(string boolean_function, int* truth_able, int no_of_rows) {
+	// get the canonical POS then print it
 
-        replace(expr.begin(), expr.end(), var, replacement);
-    }
+	// get the canonical SOP ,then print it , then put it in a strings
+		// string SOP_function
 
-    // Evaluate the expression and return the result
-    int result = 0;
-    try {
-        result = stoi(expr, 0, 2);
-    } catch (const invalid_argument& e) {
-        cerr << "Error: Invalid expression." << endl;
-    }
 
-    return result;
-}
 
-void generateTruthTable(const string& expression) {
-    // Extract unique variables from the expression
-    vector<char> variables;
-    for (char c : expression) {
-        if (isValidVariable(c) && find(variables.begin(), variables.end(), c) == variables.end()) {
-            variables.push_back(c);
-        }
-    }
+	// split the boolean function (should take canonical SOP) aka n elements i
+	vector <string> split_fun = split_SOP(SOP_function);
+	for (int i = 0; i < split_fun.size(); i++) {
+		for (int j = 0; j < split_fun[i].size(); j++) {
+			if (split_fun[i][j] == '\'') {
+				split_fun[i][j] = ' ';
+				continue;
+			}
+			else {
+				if (split_fun[i][j + 1] == '\'') {
+					split_fun[i][j] = '0';
+				}
+				else {
+					split_fun[i][j] = '1';
+				}
+			}
+		}
+	}
 
-    int numVariables = variables.size();
+	// function to remove spaces from 
+	for (int i = 0; i < split_fun.size(); i++) {
+		split_fun[i].erase(std::remove_if(split_fun[i].begin(), split_fun[i].end(), ::isspace),
+			split_fun[i].end());
+	}
 
-    cout << "Truth Table:" << endl;
-
-    // Print header with variable names
-    for (char var : variables) {
-        cout << var << " ";
-    }
-    cout << "| F" << endl;
-
-    // Calculate the number of rows in the truth table
-    int numRows = 1 << numVariables;
-
-    // Evaluate the expression for each combination of variable values
-    for (int row = 0; row < numRows; row++) {
-        vector<bool> variableValues(numVariables);
-
-        for (int i = 0; i < numVariables; i++) {
-            variableValues[i] = (row >> i) & 1;
-        }
-
-        // Evaluate the expression with the current variable values
-        bool result = evaluateBooleanExpression(expression, variables, variableValues);
-
-        // Print the current variable values and the result
-        for (int i = 0; i < numVariables; i++) {
-            cout << variableValues[i] << " ";
-        }
-        cout << "| " << result << endl;
-    }
+	// creating an array of the minterms
+	int* array_minterm = new int[split_fun.size()];
+	for (int i = 0; i < split_fun.size(); i++) {
+		array_minterm[i] = binary_string_to_decimal(split_fun[i]);
+	}
+	//function write in the truth table
+	for (int i = 0; i < split_fun.size(); i++) {
+		truth_able[array_minterm[i]] = 1;
+	}
+	//print the final truth table
+	for (int i = 0; i < no_of_rows; i++) {
+		cout << truth_able[i] << endl;
+	}
+	// return truth table
+	return truth_able;
 }
 
 //3.[20 Points] Generate and print all prime implicants(PIs).For each PI show the minterms it covers as well as its binary representation.
@@ -215,27 +237,9 @@ void draw_k_map(int no_of_variables, int *truth_able, int no_of_rows) {
 }
 
 //8.[5 Pts] Draw the logic circuit of the minimized function(up to 10 variables); you may use https ://wavedrom.com/tutorial2.html
-// function to split a SOP boolean function into its products
-vector<string> split_SOP(string str)
-{
-	vector<string> v;
-
-	stringstream ss(str);
-
-	while (ss.good()) {
-		string substr;
-		getline(ss, substr, '+');
-		v.push_back(substr);
-	}
-	return v;
-
-}
-
-void draw_logic_circuit(string minimized_function) {
-	vector <string> products = split_SOP(minimized_function);
 
 
-}
+
 
 
 int main() {
@@ -261,14 +265,20 @@ int main() {
 	}
 
 	int no_of_rows = pow(2, no_of_variables);
-	int* truth_table = new int[no_of_rows];
-	
-	// draw truth table 
 
+	int* truth_table = new int[no_of_rows];
+	for (int i = 0; i < no_of_rows; i++) {
+		truth_table[i] = 0;
+	}
+
+	int* final_truth_table = new int[no_of_rows];
+
+	// draw truth table 
+	final_truth_table = print_truth_table(boolean_function, truth_table, no_of_rows);
 	
 
 	// Draw K-map
-	draw_k_map(no_of_variables, truth_table,no_of_rows);
+	draw_k_map(no_of_variables, final_truth_table,no_of_rows);
 
 	return 0;
 
